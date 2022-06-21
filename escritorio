@@ -23,6 +23,17 @@ if [ $1 == "-c" ]; then
 
     # Plasmashell
     k_change_config "kglobalshortcutsrc" "plasmashell" "activate task manager entry 1" "Meta+1,Meta+1,Activar la entrada 1 del gestor de tareas"
+    k_change_config "kglobalshortcutsrc" "plasmashell" "activate task manager entry 2" "Meta+2,Meta+2,Activar la entrada 2 del gestor de tareas"
+    k_change_config "kglobalshortcutsrc" "plasmashell" "activate task manager entry 3" "Meta+3,Meta+3,Activar la entrada 3 del gestor de tareas"
+    k_change_config "kglobalshortcutsrc" "plasmashell" "activate task manager entry 4" "Meta+4,Meta+4,Activar la entrada 4 del gestor de tareas"
+    k_change_config "kglobalshortcutsrc" "plasmashell" "activate task manager entry 5" "Meta+5,Meta+5,Activar la entrada 5 del gestor de tareas"
+    k_change_config "kglobalshortcutsrc" "plasmashell" "activate task manager entry 6" "Meta+6,Meta+6,Activar la entrada 6 del gestor de tareas"
+    k_change_config "kglobalshortcutsrc" "plasmashell" "activate task manager entry 7" "Meta+7,Meta+7,Activar la entrada 7 del gestor de tareas"
+    k_change_config "kglobalshortcutsrc" "plasmashell" "activate task manager entry 8" "Meta+8,Meta+8,Activar la entrada 8 del gestor de tareas"
+    k_change_config "kglobalshortcutsrc" "plasmashell" "activate task manager entry 9" "Meta+9,Meta+9,Activar la entrada 9 del gestor de tareas"
+    k_change_config "kglobalshortcutsrc" "plasmashell" "activate task manager entry 10" "Meta+0,Meta+0,Activar la entrada 10 del gestor de tareas"
+
+    # Kwin
 
     # Aplicar
     qdbus org.kde.KWin /KWin reconfigure
@@ -45,7 +56,18 @@ elif [ $1 == "-g" ]; then
     k_change_config "kglobalshortcutsrc" "Alacritty.desktop" "_k_friendly_name" "Alacritty"
 
     # Plasmashell
-    k_change_config "kglobalshortcutsrc" "plasmashell" "activate task manager entry 1" "Meta+1,Meta+1,Activar la entrada 5 del gestor de tareas"
+    k_change_config "kglobalshortcutsrc" "plasmashell" "activate task manager entry 1" "none,Meta+1,Activar la entrada 1 del gestor de tareas"
+    k_change_config "kglobalshortcutsrc" "plasmashell" "activate task manager entry 2" "none,Meta+2,Activar la entrada 2 del gestor de tareas"
+    k_change_config "kglobalshortcutsrc" "plasmashell" "activate task manager entry 3" "none,Meta+3,Activar la entrada 3 del gestor de tareas"
+    k_change_config "kglobalshortcutsrc" "plasmashell" "activate task manager entry 4" "none,Meta+4,Activar la entrada 4 del gestor de tareas"
+    k_change_config "kglobalshortcutsrc" "plasmashell" "activate task manager entry 5" "none,Meta+5,Activar la entrada 5 del gestor de tareas"
+    k_change_config "kglobalshortcutsrc" "plasmashell" "activate task manager entry 6" "none,Meta+6,Activar la entrada 6 del gestor de tareas"
+    k_change_config "kglobalshortcutsrc" "plasmashell" "activate task manager entry 7" "none,Meta+7,Activar la entrada 7 del gestor de tareas"
+    k_change_config "kglobalshortcutsrc" "plasmashell" "activate task manager entry 8" "none,Meta+8,Activar la entrada 8 del gestor de tareas"
+    k_change_config "kglobalshortcutsrc" "plasmashell" "activate task manager entry 9" "none,Meta+9,Activar la entrada 9 del gestor de tareas"
+    k_change_config "kglobalshortcutsrc" "plasmashell" "activate task manager entry 10" "none,Meta+0,Activar la entrada 10 del gestor de tareas"
+
+    # Kwin
 
     # Aplicar
     qdbus org.kde.KWin /KWin reconfigure

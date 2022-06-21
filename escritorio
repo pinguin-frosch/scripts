@@ -1,0 +1,54 @@
+#!/bin/bash
+
+k_change_config() {
+    kwriteconfig5 --file "$1" --group "$2" --key "$3" $4
+}
+
+k_delete_config() {
+    kwriteconfig5 --file "$1" --group "$2" --key "$3" --delete
+}
+
+if [ $1 == "-c" ]; then
+    # Krunner
+    k_delete_config "kwinrc" "ModifierOnlyShortcuts" "Meta"
+
+    # Animaciones
+    k_delete_config "kdeglobals" "KDE" "AnimationDurationFactor"
+
+    # Google Chrome
+    k_delete_config "kglobalshortcutsrc" "google-chrome.desktop" "_launch"
+
+    # Alacritty
+    k_delete_config "kglobalshortcutsrc" "Alacritty.desktop" "_launch"
+
+    # Plasmashell
+    k_change_config "kglobalshortcutsrc" "plasmashell" "activate task manager entry 1" "Meta+1,Meta+1,Activar la entrada 1 del gestor de tareas"
+
+    # Aplicar
+    qdbus org.kde.KWin /KWin reconfigure
+    killall kglobalaccel5
+    kglobalaccel5 &
+
+elif [ $1 == "-g" ]; then
+    # Krunner
+    k_change_config "kwinrc" "ModifierOnlyShortcuts" "Meta" "org.kde.krunner,/App,,toggleDisplay"
+
+    # Animaciones
+    k_change_config "kdeglobals" "KDE" "AnimationDurationFactor" "0"
+
+    # Google Chrome
+    k_change_config "kglobalshortcutsrc" "google-chrome.desktop" "_launch" "Meta+B,none,Google Chrome"
+    k_change_config "kglobalshortcutsrc" "google-chrome.desktop" "_k_friendly_name" "Google Chrome"
+
+    # Alacritty
+    k_change_config "kglobalshortcutsrc" "Alacritty.desktop" "_launch" "Meta+T,none,Alacritty"
+    k_change_config "kglobalshortcutsrc" "Alacritty.desktop" "_k_friendly_name" "Alacritty"
+
+    # Plasmashell
+    k_change_config "kglobalshortcutsrc" "plasmashell" "activate task manager entry 1" "Meta+1,Meta+1,Activar la entrada 5 del gestor de tareas"
+
+    # Aplicar
+    qdbus org.kde.KWin /KWin reconfigure
+    killall kglobalaccel5
+    kglobalaccel5 &
+fi

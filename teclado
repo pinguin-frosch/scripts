@@ -1,0 +1,13 @@
+#!/bin/bash
+
+if [ $# -eq 1 ]; then
+    if [ $1 == "-p" ]; then
+        setxkbmap pro -option caps:swapescape
+        sed -i "s|^# bindkey -v|bindkey -v|" ~/.zshrc
+        sed -i 's|"vim.disableExtension": true,|"vim.disableExtension": false,|' /home/gabriel/.config/Code/User/settings.json
+    elif [ $1 == "-l" ]; then
+        setxkbmap latam -option
+        sed -i "s|^bindkey -v|# bindkey -v|" ~/.zshrc
+        sed -i 's|"vim.disableExtension": false,|"vim.disableExtension": true,|' /home/gabriel/.config/Code/User/settings.json
+    fi
+fi

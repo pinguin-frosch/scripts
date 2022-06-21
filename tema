@@ -1,0 +1,39 @@
+#!/bin/bash
+
+ruta=/home/gabriel/Programación/dotfiles
+
+if [ $# -ne 1 ]; then
+    exit
+else
+    if [[ $1 == "-d" ]]; then
+        # Plasma
+        lookandfeeltool -a org.kde.breezedark.desktop >/dev/null 2>&1
+        lookandfeeltool -a org.kde.breezedark.desktop >/dev/null 2>&1
+
+        # Alacritty
+        sed -i "s|^colors:.*|colors: *dark|" $ruta/alacritty/.config/alacritty/alacritty.yml
+
+        # Google Chrome
+        sed -i "s|^--$|--enable-features=WebUIDarkMode|" $ruta/chrome/.config/chrome-flags.conf
+        sed -i "s|^##$|--force-dark-mode|" $ruta/chrome/.config/chrome-flags.conf
+
+        # Visual Studio Code
+        sed -i 's|"workbench.colorTheme": .*|"workbench.colorTheme": "Atom One Dark",|' /home/gabriel/.config/Code/User/settings.json
+
+    elif [[ $1 == "-l" ]]; then
+        # Plasma
+        lookandfeeltool -a org.kde.breeze.desktop >/dev/null 2>&1
+        lookandfeeltool -a org.kde.breeze.desktop >/dev/null 2>&1
+
+        # Alacritty
+        sed -i "s|^colors:.*|colors: *light|" $ruta/alacritty/.config/alacritty/alacritty.yml
+
+        # Google Chrome
+        sed -i "s|^--enable-features=WebUIDarkMode|--|" $ruta/chrome/.config/chrome-flags.conf
+        sed -i "s|^--force-dark-mode|##|" $ruta/chrome/.config/chrome-flags.conf
+
+        # Visual Studio Code
+        sed -i 's|"workbench.colorTheme": .*|"workbench.colorTheme": "Atom One Light",|' /home/gabriel/.config/Code/User/settings.json
+
+    fi
+fi

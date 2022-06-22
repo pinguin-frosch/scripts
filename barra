@@ -1,0 +1,10 @@
+#!/bin/bash
+
+if [ $1 == "-c" ]; then
+    command=$(</home/gabriel/Programación/scripts/panel.js)
+    qdbus org.kde.plasmashell /PlasmaShell org.kde.PlasmaShell.evaluateScript "$command"
+elif [ $1 == "-g" ]; then
+    command=$(</home/gabriel/Programación/scripts/sin_panel.js)
+    qdbus org.kde.plasmashell /PlasmaShell org.kde.PlasmaShell.evaluateScript "$command"
+fi
+

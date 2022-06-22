@@ -5,7 +5,7 @@ ruta=/home/gabriel/Programación/dotfiles
 if [ $# -ne 1 ]; then
     exit
 else
-    if [[ $1 == "-d" ]]; then
+    if [[ $1 == "-o" ]]; then
         # Plasma
         lookandfeeltool -a org.kde.breezedark.desktop >/dev/null 2>&1
         lookandfeeltool -a org.kde.breezedark.desktop >/dev/null 2>&1
@@ -20,7 +20,7 @@ else
         # Visual Studio Code
         sed -i 's|"workbench.colorTheme": .*|"workbench.colorTheme": "Atom One Dark",|' /home/gabriel/.config/Code/User/settings.json
 
-    elif [[ $1 == "-l" ]]; then
+    elif [[ $1 == "-c" ]]; then
         # Plasma
         lookandfeeltool -a org.kde.breeze.desktop >/dev/null 2>&1
         lookandfeeltool -a org.kde.breeze.desktop >/dev/null 2>&1

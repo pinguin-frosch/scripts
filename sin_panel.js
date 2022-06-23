@@ -15,10 +15,20 @@ for (let desktop of all_desktops) {
 
 // Añadir el widget de la bandeja de sistema
 for (let desktop of all_desktops) {
-    let widget = desktop.addWidget("org.kde.plasma.systemtray", 5, 1000, 500, 1)
+    let widget = desktop.addWidget("org.kde.plasma.systemtray", 0, 1000, 550, 80)
     let systemtray_id = widget.readConfig("SystrayContainmentId")
     const systray = desktopById(systemtray_id)
     systray.currentConfigGroup = ["General"]
     systray.writeConfig("showAllItems", true)
     systray.reloadConfig()
+}
+
+// Añadir el widget de la hora y fecha
+for (let desktop of all_desktops) {
+    let reloj = desktop.addWidget("org.kde.plasma.digitalclock", 1616, 1000, 304, 80)
+    reloj.writeConfig("UserBackgroundHints", "StandardBackground")
+    reloj.currentConfigGroup = ["Appearance"]
+    reloj.writeConfig("showSeconds", true)
+    reloj.writeConfig("dateDisplayFormat", "BesideTime")
+    reloj.writeConfig("showWeekNumbers", true)
 }

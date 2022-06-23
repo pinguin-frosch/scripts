@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Hola desde github
+
 k_change_config() {
     kwriteconfig5 --file "$1" --group "$2" --key "$3" $4
 }

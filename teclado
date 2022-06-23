@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# lskjfkl
 if [ $1 == "-g" ]; then
     setxkbmap pro -option caps:swapescape
     sed -i "s|^# bindkey -v|bindkey -v|" ${ZDOTDIR:-$HOME}/.zshrc

@@ -1,14 +1,14 @@
 // Eliminar todos los paneles
-let all_panels = panels()
-for (let panel of all_panels) {
+let paneles = panels()
+for (let panel of paneles) {
     panel.remove()
 }
 
 // Eliminar todos los widgets
-let all_desktops = desktops()
-for (let desktop of all_desktops) {
-    let all_widgets = desktop.widgets()
-    for (let widget of all_widgets) {
+let escritorios = desktops()
+for (let escritorio of escritorios) {
+    let widgets = escritorio.widgets()
+    for (let widget of widgets) {
         widget.remove()
     }
 }
@@ -20,7 +20,6 @@ let freeEdges = { "bottom": true, "top": true, "left": true, "right": true }
 for (i = 0; i < panelIds.length; ++i) {
     let tmpPanel = panelById(panelIds[i])
     if (tmpPanel.screen == panelScreen) {
-        // Ignore the new panel
         if (tmpPanel.id != panel.id) {
             freeEdges[tmpPanel.location] = false;
         }
@@ -36,15 +35,10 @@ if (freeEdges["bottom"] == true) {
 } else if (freeEdges["right"] == true) {
     panel.location = "right";
 } else {
-    // There is no free edge, so leave the default value
     panel.location = "top";
 }
-// For an Icons-Only Task Manager on the bottom, *3 is too much, *2 is too little
-// Round down to next highest even number since the Panel size widget only displays
-// even numbers
 panel.height = 2 * Math.floor(gridUnit * 2.3 / 2)
 
-// Restrict horizontal panel to a maximum size of a 21:9 monitor
 const maximumAspectRatio = 21 / 9;
 if (panel.formFactor === "horizontal") {
     const geo = screenGeometry(panelScreen);
@@ -57,15 +51,14 @@ if (panel.formFactor === "horizontal") {
     }
 }
 
-let kickoff = panel.addWidget("org.kde.plasma.kickoff")
-kickoff.currentConfigGroup = ["Shortcuts"]
-kickoff.writeConfig("global", "Alt+F1")
+let menu_aplicaciones = panel.addWidget("org.kde.plasma.kickoff")
+menu_aplicaciones.currentConfigGroup = ["Shortcuts"]
+menu_aplicaciones.writeConfig("global", "Alt+F1")
 
-// panel.addWidget("org.kde.plasma.showActivityManager")
 panel.addWidget("org.kde.plasma.pager")
-let icontaskts = panel.addWidget("org.kde.plasma.icontasks")
-icontaskts.currentConfigGroup = ["General"]
-icontaskts.writeConfig("launchers", [
+let barra_aplicaciones = panel.addWidget("org.kde.plasma.icontasks")
+barra_aplicaciones.currentConfigGroup = ["General"]
+barra_aplicaciones.writeConfig("launchers", [
     "applications:Alacritty.desktop",
     "applications:google-chrome.desktop",
     "applications:org.kde.dolphin.desktop"
@@ -73,6 +66,8 @@ icontaskts.writeConfig("launchers", [
 
 panel.addWidget("org.kde.plasma.marginsseparator")
 panel.addWidget("org.kde.plasma.systemtray")
-panel.addWidget("org.kde.plasma.digitalclock")
+reloj = panel.addWidget("org.kde.plasma.digitalclock")
+reloj.currentConfigGroup = ["Appearance"]
+reloj.writeConfig("showWeekNumbers", true)
 panel.addWidget("org.kde.plasma.showdesktop")
 

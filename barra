@@ -2,9 +2,13 @@
 
 if [ $1 == "-c" ]; then
     command=$(</home/gabriel/Programación/scripts/esquemas_escritorio/panel.js)
+    kwriteconfig5 --file "kwinrc" --group "Plugins" --key "slideEnabled" --delete
+    qdbus org.kde.KWin /KWin reconfigure
     qdbus org.kde.plasmashell /PlasmaShell org.kde.PlasmaShell.evaluateScript "$command"
 elif [ $1 == "-g" ]; then
     command=$(</home/gabriel/Programación/scripts/esquemas_escritorio/sin_panel.js)
     qdbus org.kde.plasmashell /PlasmaShell org.kde.PlasmaShell.evaluateScript "$command"
+    kwriteconfig5 --file "kwinrc" --group "Plugins" --key "slideEnabled" "false"
+    qdbus org.kde.KWin /KWin reconfigure
 fi
 

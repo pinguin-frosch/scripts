@@ -1,0 +1,11 @@
+#!/bin/bash
+
+if [[ $1 == "-c" ]]; then
+    barra -c
+    teclado -c
+    atajos -c
+elif [[ $1 == "-g" ]]; then
+    barra -g
+    teclado -g
+    atajos -g
+fi

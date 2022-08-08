@@ -40,11 +40,13 @@ if [ $1 == "-c" ]; then
     k_change_config "kglobalshortcutsrc" "kwin" "Switch to Desktop 2" "Ctrl+F2,Ctrl+F2,Cambiar al escritorio 2"
     k_change_config "kglobalshortcutsrc" "kwin" "Switch to Desktop 3" "Ctrl+F3,Ctrl+F3,Cambiar al escritorio 3"
     k_change_config "kglobalshortcutsrc" "kwin" "Switch to Desktop 4" "Ctrl+F4,Ctrl+F4,Cambiar al escritorio 4"
+    k_change_config "kglobalshortcutsrc" "kwin" "Switch to Desktop 5" "Ctrl+F5,Ctrl+F5,Cambiar al escritorio 5"
 
     k_change_config "kglobalshortcutsrc" "kwin" "Window to Desktop 1" "none,none,Ventana al escritorio 1"
     k_change_config "kglobalshortcutsrc" "kwin" "Window to Desktop 2" 'none,none,Ventana al escritorio 2'
     k_change_config "kglobalshortcutsrc" "kwin" "Window to Desktop 3" "none,none,Ventana al escritorio 3"
     k_change_config "kglobalshortcutsrc" "kwin" "Window to Desktop 4" "none,none,Ventana al escritorio 4"
+    k_change_config "kglobalshortcutsrc" "kwin" "Window to Desktop 5" "none,none,Ventana al escritorio 5"
 
     # Aplicar
     qdbus org.kde.KWin /KWin reconfigure
@@ -83,11 +85,13 @@ elif [ $1 == "-g" ]; then
     k_change_config "kglobalshortcutsrc" "kwin" "Switch to Desktop 2" "Meta+2,Ctrl+F2,Cambiar al escritorio 2"
     k_change_config "kglobalshortcutsrc" "kwin" "Switch to Desktop 3" "Meta+3,Ctrl+F3,Cambiar al escritorio 3"
     k_change_config "kglobalshortcutsrc" "kwin" "Switch to Desktop 4" "Meta+4,Ctrl+F4,Cambiar al escritorio 4"
+    k_change_config "kglobalshortcutsrc" "kwin" "Switch to Desktop 5" "Meta+5,Ctrl+F5,Cambiar al escritorio 5"
 
     k_change_config "kglobalshortcutsrc" "kwin" "Window to Desktop 1" "Meta+!,none,Ventana al escritorio 1"
-    k_change_config "kglobalshortcutsrc" "kwin" "Window to Desktop 2" 'Meta+",none,Ventana al escritorio 1'
-    k_change_config "kglobalshortcutsrc" "kwin" "Window to Desktop 3" "Meta+#,none,Ventana al escritorio 1"
-    k_change_config "kglobalshortcutsrc" "kwin" "Window to Desktop 4" "Meta+$,none,Ventana al escritorio 1"
+    k_change_config "kglobalshortcutsrc" "kwin" "Window to Desktop 2" 'Meta+",none,Ventana al escritorio 2'
+    k_change_config "kglobalshortcutsrc" "kwin" "Window to Desktop 3" "Meta+#,none,Ventana al escritorio 3"
+    k_change_config "kglobalshortcutsrc" "kwin" "Window to Desktop 4" "Meta+$,none,Ventana al escritorio 4"
+    k_change_config "kglobalshortcutsrc" "kwin" "Window to Desktop 5" "Meta+%,none,Ventana al escritorio 5"
 
     # Aplicar
     qdbus org.kde.KWin /KWin reconfigure

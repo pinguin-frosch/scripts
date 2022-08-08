@@ -20,6 +20,14 @@ else
         # Visual Studio Code
         sed -i 's|"workbench.colorTheme": .*|"workbench.colorTheme": "Atom One Dark",|' /home/gabriel/.config/Code/User/settings.json
 
+        # Neovim
+        sed -i "s|background = .*|background = 'dark'|" $ruta/neovim/.config/nvim/init.lua
+
+        # Tmux
+        sed -i "s|'bg=.*|'bg=#282c34'|" $ruta/tmux/.config/tmux/tmux.conf
+        sed -i "s|'fg=.*|'fg=#abb2bf'|" $ruta/tmux/.config/tmux/tmux.conf
+        tmux source-file $ruta/tmux/.config/tmux/tmux.conf
+
     elif [[ $1 == "-c" ]]; then
         # Plasma
         lookandfeeltool -a org.kde.breeze.desktop >/dev/null 2>&1
@@ -34,6 +42,14 @@ else
 
         # Visual Studio Code
         sed -i 's|"workbench.colorTheme": .*|"workbench.colorTheme": "Atom One Light",|' /home/gabriel/.config/Code/User/settings.json
+
+        # Neovim
+        sed -i "s|background = .*|background = 'light'|" $ruta/neovim/.config/nvim/init.lua
+
+        # Tmux
+        sed -i "s|'bg=.*|'bg=#fafafa'|" $ruta/tmux/.config/tmux/tmux.conf
+        sed -i "s|'fg=.*|'fg=#6a6a6a'|" $ruta/tmux/.config/tmux/tmux.conf
+        tmux source-file $ruta/tmux/.config/tmux/tmux.conf
 
     fi
 fi

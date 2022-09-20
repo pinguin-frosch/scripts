@@ -1,55 +1,184 @@
-#!/bin/bash
+#!/bin/python
 
-ruta=/home/gabriel/Programación/dotfiles
+import json
+import sys
+import os
 
-if [ $# -ne 1 ]; then
-    exit
-else
-    if [[ $1 == "-o" ]]; then
-        # Plasma
-        lookandfeeltool -a org.kde.breezedark.desktop >/dev/null 2>&1
-        lookandfeeltool -a org.kde.breezedark.desktop >/dev/null 2>&1
+def main():
+    # Obtener argumentos
+    args = sys.argv[1:]
 
-        # Alacritty
-        sed -i "s|^colors:.*|colors: *dark|" $ruta/alacritty/.config/alacritty/alacritty.yml
+    # Comprobar configuración y obtener ruta
+    app_file_config = check_config()
 
-        # Google Chrome
-        sed -i "s|^--$|--enable-features=WebUIDarkMode|" $ruta/chrome/.config/chrome-flags.conf
-        sed -i "s|^##$|--force-dark-mode|" $ruta/chrome/.config/chrome-flags.conf
+    # Cargar configuración
+    print('Reading config...')
+    config_json = load_config(app_file_config)
 
-        # Visual Studio Code
-        sed -i 's|"workbench.colorTheme": .*|"workbench.colorTheme": "Atom One Dark",|' /home/gabriel/.config/Code/User/settings.json
+    # Cambiar entre claro a oscuro y viceversa
+    if len(args) == 0:
+        if config_json['tema'] == 1:
+            dark_theme()
+        elif config_json['tema'] == -1:
+            light_theme()
 
-        # Neovim
-        sed -i "s|background = .*|background = 'dark'|" $ruta/neovim/.config/nvim/init.lua
+        config_json['tema'] *= -1
 
-        # Tmux
-        sed -i "s|'bg=.*|'bg=#282c34'|" $ruta/tmux/.config/tmux/tmux.conf
-        sed -i "s|'fg=.*|'fg=#abb2bf'|" $ruta/tmux/.config/tmux/tmux.conf
-        tmux source-file $ruta/tmux/.config/tmux/tmux.conf
+    # Usar tema oscuro
+    elif is_dark(args):
+        dark_theme()
 
-    elif [[ $1 == "-c" ]]; then
-        # Plasma
-        lookandfeeltool -a org.kde.breeze.desktop >/dev/null 2>&1
-        lookandfeeltool -a org.kde.breeze.desktop >/dev/null 2>&1
+        config_json['tema'] = -1
 
-        # Alacritty
-        sed -i "s|^colors:.*|colors: *light|" $ruta/alacritty/.config/alacritty/alacritty.yml
+    # Usar tema claro
+    elif is_light(args):
+        light_theme()
 
-        # Google Chrome
-        sed -i "s|^--enable-features=WebUIDarkMode|--|" $ruta/chrome/.config/chrome-flags.conf
-        sed -i "s|^--force-dark-mode|##|" $ruta/chrome/.config/chrome-flags.conf
+        config_json['tema'] = 1
 
-        # Visual Studio Code
-        sed -i 's|"workbench.colorTheme": .*|"workbench.colorTheme": "Atom One Light",|' /home/gabriel/.config/Code/User/settings.json
+    # Guardar configuración
+    print('Saving config...')
+    save_config(app_file_config, config_json)
 
-        # Neovim
-        sed -i "s|background = .*|background = 'light'|" $ruta/neovim/.config/nvim/init.lua
+def run_commands(command_list):
+    for command in command_list:
+        os.system(command)
 
-        # Tmux
-        sed -i "s|'bg=.*|'bg=#fafafa'|" $ruta/tmux/.config/tmux/tmux.conf
-        sed -i "s|'fg=.*|'fg=#6a6a6a'|" $ruta/tmux/.config/tmux/tmux.conf
-        tmux source-file $ruta/tmux/.config/tmux/tmux.conf
+def dark_theme():
+    print('Applying dark theme...')
+    commands = {
+        'System': [
+            'lookandfeeltool -a org.kde.breezedark.desktop >/dev/null 2>&1'
+        ],
+        'Alacritty': [
+            f'sed -i "s|^colors:.*|colors: *dark|" {paths["alacritty"]}'
+        ],
+        'Google Chrome': [
+            f'sed -i "s|^--$|--enable-features=WebUIDarkMode|" {paths["chrome"]}',
+            f'sed -i "s|^##$|--force-dark-mode|" {paths["chrome"]}'
+        ],
+        'Neovim': [
+            f'sed -i "s|background = .*|background = \'dark\'|" {paths["neovim"]}'
+        ],
+        'Tmux': [
+            f'sed -i "s|\'bg=.*|\'bg=#282c34\'|" {paths["tmux"]}',
+            f'sed -i "s|\'fg=.*|\'fg=#abb2bf\'|" {paths["tmux"]}',
+            f'tmux source-file {paths["tmux"]}'
+        ],
+        'Visual Studio Code': [
+            f'sed -i \'s|"workbench.colorTheme": .*|"workbench.colorTheme": "One Dark Pro Darker",|\' {paths["vscode"]}'
+        ],
+    }
 
-    fi
-fi
+    # Apply theme
+    for app, values in commands.items():
+        print(f'{app}...')
+        run_commands(values)
+
+def light_theme():
+    print('Applying light theme...')
+    commands = {
+        'System': [
+            'lookandfeeltool -a org.kde.breeze.desktop >/dev/null 2>&1'
+        ],
+        'Alacritty': [
+            f'sed -i "s|^colors:.*|colors: *light|" {paths["alacritty"]}'
+        ],
+        'Google Chrome': [
+            f'sed -i "s|^--enable-features=WebUIDarkMode|--|" {paths["chrome"]}',
+            f'sed -i "s|^--force-dark-mode|##|" {paths["chrome"]}'
+        ],
+        'Neovim': [
+            f'sed -i "s|background = .*|background = \'light\'|" {paths["neovim"]}'
+        ],
+        'Tmux': [
+            f'sed -i "s|\'bg=.*|\'bg=#fafafa\'|" {paths["tmux"]}',
+            f'sed -i "s|\'fg=.*|\'fg=#6a6a6a\'|" {paths["tmux"]}',
+            f'tmux source-file {paths["tmux"]}'
+        ],
+        'Visual Studio Code': [
+            f'sed -i \'s|"workbench.colorTheme": .*|"workbench.colorTheme": "Atom One Light",|\' {paths["vscode"]}'
+        ],
+    }
+
+    # Apply theme
+    for app, values in commands.items():
+        print(f'{app}...')
+        run_commands(values)
+
+def is_dark(args):
+    valores = ['-d', '--dark', '-o', '--oscuro']
+    for valor in valores:
+        if valor in args:
+            return True
+    return False
+
+def is_light(args):
+    valores = ['-l', '--light', '-c', '--claro']
+    for valor in valores:
+        if valor in args:
+            return True
+    return False
+
+def check_config():
+    # Obtener ruta de configuración
+    configs_dir = get_configs_dir()
+    app_dir_config = get_app_dir_config(configs_dir)
+
+    # Crear carpeta de configuración si no existe
+    if not os.path.exists(app_dir_config):
+        print('Recreating config folder...')
+        os.mkdir(app_dir_config)
+
+    app_file_config = get_app_file_config(app_dir_config)
+
+    # Crear la configuración si no existe
+    if not os.path.exists(app_file_config):
+        create_config(app_file_config)
+
+    # Devolver ruta para reutilizar
+    return app_file_config
+
+def load_config(app_file_config):
+    # Abrir configuración
+    with open(app_file_config, 'r') as config:
+        try:
+            config_json = json.load(config)
+        except json.decoder.JSONDecodeError:
+            create_config(app_file_config)
+    return config_json
+
+def save_config(app_file_config, config):
+    with open(app_file_config, 'w') as file:
+        config_string = json.dumps(config)
+        file.write(config_string)
+
+def get_configs_dir():
+    home = os.getenv('HOME')
+    config_home = os.path.join(home, '.config')
+    return os.getenv('XDG_CONFIG_HOME', config_home)
+
+def get_app_dir_config(configs_dir):
+    return os.path.join(configs_dir, 'tema')
+
+def get_app_file_config(app_dir_config):
+    return os.path.join(app_dir_config, 'config.json')
+
+def create_config(app_file_config):
+    print('Recreating config file...')
+    config = {'tema': -1}
+    config_string = json.dumps(config)
+    with open(app_file_config, 'w') as file:
+        file.write(config_string)
+
+configs = get_configs_dir()
+paths = {
+    'alacritty': f'{configs}/alacritty/alacritty.yml',
+    'chrome': f'{configs}/chrome-flags.conf',
+    'neovim': f'{configs}/nvim/init.lua',
+    'tmux': f'{configs}/tmux/tmux.conf',
+    'vscode': f'{configs}/Code/User/settings.json',
+}
+
+if __name__ == '__main__':
+    main()

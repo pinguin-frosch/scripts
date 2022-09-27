@@ -66,7 +66,7 @@ def dark_theme():
             f'tmux source-file {paths["tmux"]}'
         ],
         'Visual Studio Code': [
-            f'sed -i \'s|"workbench.colorTheme": .*|"workbench.colorTheme": "One Dark Pro Darker",|\' {paths["vscode"]}'
+            f'sed -i \'s|"workbench.colorTheme": .*|"workbench.colorTheme": "Atom One Dark",|\' {paths["vscode"]}'
         ],
     }
 

@@ -25,7 +25,7 @@ for (let desktop of all_desktops) {
 
 // Añadir el widget de la hora y fecha
 for (let desktop of all_desktops) {
-    let reloj = desktop.addWidget("org.kde.plasma.digitalclock", 1616, 1000, 304, 80)
+    let reloj = desktop.addWidget("org.kde.plasma.digitalclock", 1590, 1000, 330, 80)
     reloj.writeConfig("UserBackgroundHints", "StandardBackground")
     reloj.currentConfigGroup = ["Appearance"]
     reloj.writeConfig("showSeconds", true)

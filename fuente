@@ -1,0 +1,152 @@
+#!/bin/python
+
+import json
+import sys
+import os
+
+
+def main():
+    # Obtener argumentos
+    args = sys.argv[1:]
+
+    # Solo puede haber una fuente
+    if len(args) != 1:
+        print('Uso: fuente <fuente>')
+        return
+
+    # Comprobar configuración y obtener ruta
+    app_file_config = check_config()
+
+    # Cargar configuración
+    config_json = load_config(app_file_config)
+
+    fuente = args[0].lower()
+
+    fuentes = []
+    # Cambiar la fuente si existe
+    for fuente_config in config_json:
+        fuentes.append(fuente_config['nombre'])
+        if fuente_config['nombre'] == fuente:
+            change_font(fuente_config['fuente'])
+            break
+
+    else:
+        print(f'La fuente {fuente} no existe.')
+        print(f'Las fuentes disponibles son: {", ".join(fuentes)}')
+        exit(1)
+
+
+def run_commands(command_list):
+    for command in command_list:
+        os.system(command)
+
+
+def change_font(font):
+    print(f'Changing font to {font}...')
+    commands = {
+        'Alacritty': [
+            f'sed -i "s|family:.*|family: {font}|" {paths["alacritty"]}'
+        ],
+        'Visual Studio Code': [
+            f'sed -i \'s|"editor.fontFamily": .*|"editor.fontFamily": "{font}",|\' {paths["vscode"]}'
+        ]
+    }
+
+    # Apply font
+    for app, values in commands.items():
+        print(f'{app}...')
+        run_commands(values)
+
+
+def check_config():
+    # Obtener ruta de configuración
+    configs_dir = get_configs_dir()
+    app_dir_config = get_app_dir_config(configs_dir)
+
+    # Crear carpeta de configuración si no existe
+    if not os.path.exists(app_dir_config):
+        print('Recreating config folder...')
+        os.mkdir(app_dir_config)
+
+    app_file_config = get_app_file_config(app_dir_config)
+
+    # Crear la configuración si no existe
+    if not os.path.exists(app_file_config):
+        create_config(app_file_config)
+
+    # Devolver ruta para reutilizar
+    return app_file_config
+
+
+def load_config(app_file_config):
+    # Abrir configuración
+    with open(app_file_config, 'r') as config:
+        try:
+            config_json = json.load(config)
+        except json.decoder.JSONDecodeError:
+            create_config(app_file_config)
+    return config_json
+
+
+def save_config(app_file_config, config):
+    with open(app_file_config, 'w') as file:
+        config_string = json.dumps(config)
+        file.write(config_string)
+
+
+def get_configs_dir():
+    home = os.getenv('HOME')
+    config_home = os.path.join(home, '.config')
+    return os.getenv('XDG_CONFIG_HOME', config_home)
+
+
+def get_app_dir_config(configs_dir):
+    return os.path.join(configs_dir, 'fuente')
+
+
+def get_app_file_config(app_dir_config):
+    return os.path.join(app_dir_config, 'config.json')
+
+
+def create_config(app_file_config):
+    print('Recreating config file...')
+    config = [
+        {
+            'nombre': 'agave',
+            'fuente': 'Agave Nerd Font'
+        },
+        {
+            'nombre': 'anonymice',
+            'fuente': 'Anonymice Nerd Font'
+        },
+        {
+            'nombre': 'cascadia',
+            'fuente': 'Cascadia Mono'
+        },
+        {
+            'nombre': 'fantasque',
+            'fuente': 'FantasqueSansMono Nerd Font'
+        },
+        {
+            'nombre': 'fira',
+            'fuente': 'FiraCode Nerd Font'
+        },
+        {
+            'nombre': 'mononoki',
+            'fuente': 'Mononoki Nerd Font'
+        }
+    ]
+
+    config_string = json.dumps(config)
+    with open(app_file_config, 'w') as file:
+        file.write(config_string)
+
+
+configs = get_configs_dir()
+paths = {
+    'alacritty': f'{configs}/alacritty/alacritty.yml',
+    'vscode': f'{configs}/Code/User/settings.json',
+}
+
+if __name__ == '__main__':
+    main()

@@ -4,6 +4,7 @@ import json
 import sys
 import os
 
+
 def main():
     # Obtener argumentos
     args = sys.argv[1:]
@@ -40,9 +41,11 @@ def main():
     print('Saving config...')
     save_config(app_file_config, config_json)
 
+
 def run_commands(command_list):
     for command in command_list:
         os.system(command)
+
 
 def dark_theme():
     print('Applying dark theme...')
@@ -68,12 +71,19 @@ def dark_theme():
         'Visual Studio Code': [
             f'sed -i \'s|"workbench.colorTheme": .*|"workbench.colorTheme": "Atom One Dark",|\' {paths["vscode"]}'
         ],
+        'OBS': [
+            f'sed -i "s|CurrentTheme3=.*|CurrentTheme3=Yami|" {paths["obs"]}'
+        ],
+        'Only Office': [
+            f'sed -i "s|UITheme2=.*|UITheme2=theme-dark|" {paths["onlyoffice"]}'
+        ],
     }
 
     # Apply theme
     for app, values in commands.items():
         print(f'{app}...')
         run_commands(values)
+
 
 def light_theme():
     print('Applying light theme...')
@@ -99,12 +109,19 @@ def light_theme():
         'Visual Studio Code': [
             f'sed -i \'s|"workbench.colorTheme": .*|"workbench.colorTheme": "Atom One Light",|\' {paths["vscode"]}'
         ],
+        'OBS': [
+            f'sed -i "s|CurrentTheme3=.*|CurrentTheme3=Light|" {paths["obs"]}'
+        ],
+        'Only Office': [
+            f'sed -i "s|UITheme2=.*|UITheme2=theme-light|" {paths["onlyoffice"]}'
+        ],
     }
 
     # Apply theme
     for app, values in commands.items():
         print(f'{app}...')
         run_commands(values)
+
 
 def is_dark(args):
     valores = ['-d', '--dark', '-o', '--oscuro']
@@ -113,12 +130,14 @@ def is_dark(args):
             return True
     return False
 
+
 def is_light(args):
     valores = ['-l', '--light', '-c', '--claro']
     for valor in valores:
         if valor in args:
             return True
     return False
+
 
 def check_config():
     # Obtener ruta de configuración
@@ -139,6 +158,7 @@ def check_config():
     # Devolver ruta para reutilizar
     return app_file_config
 
+
 def load_config(app_file_config):
     # Abrir configuración
     with open(app_file_config, 'r') as config:
@@ -148,21 +168,26 @@ def load_config(app_file_config):
             create_config(app_file_config)
     return config_json
 
+
 def save_config(app_file_config, config):
     with open(app_file_config, 'w') as file:
         config_string = json.dumps(config)
         file.write(config_string)
+
 
 def get_configs_dir():
     home = os.getenv('HOME')
     config_home = os.path.join(home, '.config')
     return os.getenv('XDG_CONFIG_HOME', config_home)
 
+
 def get_app_dir_config(configs_dir):
     return os.path.join(configs_dir, 'tema')
 
+
 def get_app_file_config(app_dir_config):
     return os.path.join(app_dir_config, 'config.json')
+
 
 def create_config(app_file_config):
     print('Recreating config file...')
@@ -171,6 +196,7 @@ def create_config(app_file_config):
     with open(app_file_config, 'w') as file:
         file.write(config_string)
 
+
 configs = get_configs_dir()
 paths = {
     'alacritty': f'{configs}/alacritty/alacritty.yml',
@@ -178,6 +204,8 @@ paths = {
     'neovim': f'{configs}/nvim/init.lua',
     'tmux': f'{configs}/tmux/tmux.conf',
     'vscode': f'{configs}/Code/User/settings.json',
+    'obs': f'{configs}/obs-studio/global.ini',
+    'onlyoffice': f'{configs}/onlyoffice/DesktopEditors.conf'
 }
 
 if __name__ == '__main__':

@@ -61,7 +61,7 @@ def dark_theme():
             f'sed -i "s|^##$|--force-dark-mode|" {paths["chrome"]}'
         ],
         'Neovim': [
-            f'sed -i "s|background = .*|background = \'dark\'|" {paths["neovim"]}'
+            f'sed -i "s|color = true|color = false|" {paths["neovim"]}'
         ],
         'Tmux': [
             f'sed -i "s|\'bg=.*|\'bg=#282c34\'|" {paths["tmux"]}',
@@ -99,7 +99,7 @@ def light_theme():
             f'sed -i "s|^--force-dark-mode|##|" {paths["chrome"]}'
         ],
         'Neovim': [
-            f'sed -i "s|background = .*|background = \'light\'|" {paths["neovim"]}'
+            f'sed -i "s|color = false|color = true|" {paths["neovim"]}'
         ],
         'Tmux': [
             f'sed -i "s|\'bg=.*|\'bg=#fafafa\'|" {paths["tmux"]}',

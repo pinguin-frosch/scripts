@@ -61,7 +61,7 @@ def dark_theme():
             f'sed -i "s|^##$|--force-dark-mode|" {paths["chrome"]}'
         ],
         'Neovim': [
-            f'sed -i "s|color = true|color = false|" {paths["neovim"]}'
+            f'sed -i "6s|background = .*|background = \'dark\'|" {paths["neovim"]}'
         ],
         'Tmux': [
             f'sed -i "s|\'bg=.*|\'bg=#282c34\'|" {paths["tmux"]}',
@@ -99,7 +99,7 @@ def light_theme():
             f'sed -i "s|^--force-dark-mode|##|" {paths["chrome"]}'
         ],
         'Neovim': [
-            f'sed -i "s|color = false|color = true|" {paths["neovim"]}'
+            f'sed -i "6s|background = .*|background = \'light\'|" {paths["neovim"]}'
         ],
         'Tmux': [
             f'sed -i "s|\'bg=.*|\'bg=#fafafa\'|" {paths["tmux"]}',
@@ -201,7 +201,7 @@ configs = get_configs_dir()
 paths = {
     'alacritty': f'{configs}/alacritty/alacritty.yml',
     'chrome': f'{configs}/chrome-flags.conf',
-    'neovim': f'{configs}/nvim/init.lua',
+    'neovim': f'{configs}/nvim/lua/config/options.lua',
     'tmux': f'{configs}/tmux/tmux.conf',
     'vscode': f'{configs}/Code/User/settings.json',
     'obs': f'{configs}/obs-studio/global.ini',
